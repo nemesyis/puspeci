@@ -1,4 +1,15 @@
 <?php
+// Simple session for CSRF token
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+// Create a CSRF token for the form if not present
+if (empty($_SESSION['csrf'])) {
+    try {
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    } catch (Exception $e) {
+        $_SESSION['csrf'] = bin2hex(openssl_random_pseudo_bytes(32));
+    }
+}
+
 // Tampilkan pesan sukses/error kalau ada (dikirim dari submit.php via redirect)
 $pesan_sukses = $_GET['sukses'] ?? null;
 $nomor_tiket  = $_GET['tiket']  ?? null;
@@ -102,7 +113,7 @@ $pesan_error  = $_GET['error']  ?? null;
                 <div>
                     <strong>Pengaduan berhasil dikirim!</strong><br>
                     Nomor tiket kamu: <strong><?= htmlspecialchars($nomor_tiket) ?></strong><br>
-                    <small class="text-muted">Simpan nomor ini untuk mengecek status pengaduan.</small>
+                    <small class="text-muted">Catat atau screenshot nomor ini untuk mengecek status pengaduan.</small>
                 </div>
             </div>
             <?php endif; ?>
@@ -149,6 +160,17 @@ $pesan_error  = $_GET['error']  ?? null;
                                placeholder="08xx-xxxx-xxxx" maxlength="20">
                     </div>
 
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Email
+                            <span class="badge-status ms-1">Opsional</span>
+                        </label>
+                        <input type="email" name="email" class="form-control"
+                               placeholder="contoh@email.com" maxlength="150">
+                        <div class="form-text">Isi jika ingin mendapat konfirmasi via email.</div>
+                    </div>
+
                     <!-- Kategori -->
                     <div class="mb-3">
                         <label class="form-label">
@@ -191,6 +213,39 @@ $pesan_error  = $_GET['error']  ?? null;
                         <input type="file" name="foto" class="form-control" accept="image/jpeg,image/png,image/webp">
                         <div class="form-text">Format: JPG, PNG, WEBP. Maks. 2 MB.</div>
                     </div>
+
+                    <input type="hidden" name="csrf" value="<?= htmlspecialchars(
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        $_SESSION['csrf']
+                    ) ?>">
 
                     <div class="d-grid">
                         <button type="submit" class="btn btn-submit btn-success text-white">

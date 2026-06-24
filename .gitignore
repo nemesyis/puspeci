@@ -1,0 +1,12 @@
+# Ignore environment files with secrets
+.env
+
+# Composer
+/vendor/
+/composer.lock
+
+# Node
+node_modules/
+
+# Logs
+.log
