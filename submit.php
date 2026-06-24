@@ -10,9 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // ── 1. Ambil & bersihkan input ──────────────────────────────────────────────
 $nama_pelapor  = trim($_POST['nama_pelapor'] ?? '');
 $no_hp         = trim($_POST['no_hp']        ?? '');
+$email         = trim($_POST['email']        ?? '');
 $kategori      = trim($_POST['kategori']     ?? '');
 $judul         = trim($_POST['judul']        ?? '');
 $isi_pengaduan = trim($_POST['isi_pengaduan'] ?? '');
+
+// Validasi format email kalau diisi
+if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    header('Location: index.php?error=Format+email+tidak+valid');
+    exit;
+}
 
 // Nama kosong → set anonim
 if ($nama_pelapor === '') $nama_pelapor = 'Anonim';
@@ -81,13 +88,14 @@ $nomor_tiket = generateNomorTiket($conn);
 // ── 5. Simpan ke database ───────────────────────────────────────────────────
 $stmt = $conn->prepare("
     INSERT INTO pengaduan
-        (nomor_tiket, nama_pelapor, no_hp, kategori, judul, isi_pengaduan, foto)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+        (nomor_tiket, nama_pelapor, no_hp, email, kategori, judul, isi_pengaduan, foto)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->bind_param('sssssss',
+$stmt->bind_param('ssssssss',
     $nomor_tiket,
     $nama_pelapor,
     $no_hp,
+    $email,
     $kategori,
     $judul,
     $isi_pengaduan,
@@ -95,7 +103,27 @@ $stmt->bind_param('sssssss',
 );
 
 if ($stmt->execute()) {
-    // Sukses → redirect ke halaman utama dengan notifikasi
+
+    // ── Kirim email notifikasi ke pelapor (kalau email diisi) ────────────────
+    if ($email !== '') {
+        require_once __DIR__ . '/config/mail.php';
+
+        $subject  = "[Puspeci] Pengaduan diterima — $nomor_tiket";
+        $body     = "Halo $nama_pelapor,\n\n";
+        $body    .= "Pengaduan kamu telah berhasil kami terima. Berikut detailnya:\n\n";
+        $body    .= "Nomor Tiket : $nomor_tiket\n";
+        $body    .= "Kategori    : $kategori\n";
+        $body    .= "Judul       : $judul\n";
+        $body    .= "Status      : Masuk\n\n";
+        $body    .= "Pantau status pengaduan di:\n";
+        $body    .= "https://puspeci.sbs/status.php?tiket=" . urlencode($nomor_tiket) . "\n\n";
+        $body    .= "Simpan nomor tiket untuk keperluan pengecekan status.\n\n";
+        $body    .= "Terima kasih,\nPusat Pengaduan Masyarakat Cimuncang\npuspeci.sbs";
+
+        kirim_email($email, $subject, $body);
+        // gagal kirim tidak menghentikan proses — pengaduan tetap tersimpan
+    }
+
     header('Location: index.php?sukses=1&tiket=' . urlencode($nomor_tiket));
 } else {
     header('Location: index.php?error=Gagal+menyimpan+pengaduan,+coba+lagi');

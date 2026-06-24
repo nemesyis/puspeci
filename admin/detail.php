@@ -32,8 +32,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
         $upd = $conn->prepare("UPDATE pengaduan SET status = ? WHERE id = ?");
         $upd->bind_param('si', $new_status, $id);
         if ($upd->execute()) {
-            $p['status']     = $new_status; // update tampilan langsung
-            $pesan_sukses    = "Status berhasil diperbarui menjadi <strong>$new_status</strong>.";
+            $p['status']  = $new_status;
+            $pesan_sukses = "Status berhasil diperbarui menjadi <strong>$new_status</strong>.";
+
+            // ── Kirim email notifikasi ke pelapor jika ada email ────────────
+            if (!empty($p['email'])) {
+                require_once __DIR__ . '/../config/mail.php';
+
+                $subject  = "[Puspeci] Update status pengaduan {$p['nomor_tiket']}";
+                $body     = "Halo {$p['nama_pelapor']},\n\n";
+                $body    .= "Status pengaduan kamu telah diperbarui:\n\n";
+                $body    .= "Nomor Tiket : {$p['nomor_tiket']}\n";
+                $body    .= "Judul       : {$p['judul']}\n";
+                $body    .= "Status baru : $new_status\n\n";
+                $body    .= "Pantau detail pengaduan di:\n";
+                $body    .= "https://puspeci.sbs/status.php?tiket=" . urlencode($p['nomor_tiket']) . "\n\n";
+                $body    .= "Terima kasih,\nPusat Pengaduan Masyarakat Cimuncang\npuspeci.sbs";
+
+                kirim_email($p['email'], $subject, $body);
+            }
+
         } else {
             $pesan_error = 'Gagal memperbarui status.';
         }
@@ -203,6 +221,19 @@ $badge = $badge_map[$p['status']] ?? 'secondary';
                         <a href="https://wa.me/62<?= ltrim($p['no_hp'], '0') ?>" target="_blank"
                            class="text-success text-decoration-none">
                             <i class="bi bi-whatsapp me-1"></i><?= htmlspecialchars($p['no_hp']) ?>
+                        </a>
+                        <?php else: ?>
+                        <span class="text-muted">—</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field-label">Email</div>
+                    <div class="field-value">
+                        <?php if ($p['email']): ?>
+                        <a href="mailto:<?= htmlspecialchars($p['email']) ?>"
+                           class="text-success text-decoration-none">
+                            <i class="bi bi-envelope me-1"></i><?= htmlspecialchars($p['email']) ?>
                         </a>
                         <?php else: ?>
                         <span class="text-muted">—</span>

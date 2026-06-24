@@ -102,7 +102,7 @@ $pesan_error  = $_GET['error']  ?? null;
                 <div>
                     <strong>Pengaduan berhasil dikirim!</strong><br>
                     Nomor tiket kamu: <strong><?= htmlspecialchars($nomor_tiket) ?></strong><br>
-                    <small class="text-muted">Simpan nomor ini untuk mengecek status pengaduan.</small>
+                    <small class="text-muted">Catat atau screenshot nomor ini untuk mengecek status pengaduan.</small>
                 </div>
             </div>
             <?php endif; ?>
@@ -147,6 +147,17 @@ $pesan_error  = $_GET['error']  ?? null;
                         </label>
                         <input type="tel" name="no_hp" class="form-control"
                                placeholder="08xx-xxxx-xxxx" maxlength="20">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Email
+                            <span class="badge-status ms-1">Opsional</span>
+                        </label>
+                        <input type="email" name="email" class="form-control"
+                               placeholder="contoh@email.com" maxlength="150">
+                        <div class="form-text">Isi jika ingin mendapat konfirmasi via email.</div>
                     </div>
 
                     <!-- Kategori -->
