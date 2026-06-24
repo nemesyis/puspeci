@@ -3,10 +3,16 @@
 // Lokal (XAMPP/Laragon): host = localhost, user = root, pass = ''
 // Hostinger nanti: sesuai info di hPanel > MySQL Databases
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'puspeci_db');
+// Prefer environment variables if present (useful when running via .env or container)
+$db_host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : 'localhost';
+$db_user = getenv('DB_USER') !== false ? getenv('DB_USER') : 'root';
+$db_pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
+$db_name = getenv('DB_NAME') !== false ? getenv('DB_NAME') : 'puspeci_db';
+
+define('DB_HOST', $db_host);
+define('DB_USER', $db_user);
+define('DB_PASS', $db_pass);
+define('DB_NAME', $db_name);
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
