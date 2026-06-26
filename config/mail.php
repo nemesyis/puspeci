@@ -12,10 +12,12 @@ $dotenv->load();
 $env_mail_from = $_ENV['MAIL_FROM'] ?? null;
 $env_mail_from_name = $_ENV['MAIL_FROM_NAME'] ?? null;
 $env_mail_password = $_ENV['MAIL_PASSWORD'] ?? null;
+$env_admin_email = $_ENV['ADMIN_EMAIL'] ?? null;
 
 define('MAIL_FROM', $env_mail_from);
 define('MAIL_FROM_NAME', $env_mail_from_name ?: 'Pusat Pengaduan Masyarakat Cimuncang');
 define('MAIL_PASSWORD',  $env_mail_password);
+define('ADMIN_EMAIL', $env_admin_email);
 /**
  * Kirim email via Gmail SMTP.
  *
@@ -52,12 +54,7 @@ function kirim_email(string $to, string $subject, string $body): bool
         $mail->isHTML(false);
         $mail->Subject = $subject;
         $mail->Body    = $body;
-
-        if ($mail->send()) {
-    echo "Email sent successfully";
-} else {
-    echo "Failed to send email";
-}
+        $mail->send();
         return true;
     } catch (Exception $e) {
         // Log error tapi jangan hentikan proses utama

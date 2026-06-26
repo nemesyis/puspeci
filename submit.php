@@ -200,8 +200,22 @@ if ($stmt->execute()) {
         $body    .= "Terima kasih,\nPusat Pengaduan Masyarakat Cimuncang\npuspeci.sbs";
 
         kirim_email($email, $subject, $body);
-        // gagal kirim tidak menghentikan proses — pengaduan tetap tersimpan
     }
+        $admin_subject = "[Puspeci] Pengaduan baru masuk — $nomor_tiket";
+        $admin_body    = "Ada pengaduan baru yang masuk:\n\n";
+        $admin_body   .= "Nomor Tiket : $nomor_tiket\n";
+        $admin_body   .= "Nama        : $nama_pelapor\n";
+        $admin_body   .= "No. HP      : " . ($no_hp ?: '-') . "\n";
+        $admin_body   .= "Email       : " . ($email ?: '-') . "\n";
+        $admin_body   .= "RT / RW     : " . ($rt && $rw ? "RT $rt / RW $rw" : '-') . "\n";
+        $admin_body   .= "Kategori    : $kategori\n";
+        $admin_body   .= "Judul       : $judul\n\n";
+        $admin_body   .= "Isi Pengaduan:\n$isi_pengaduan\n\n";
+        $admin_body   .= "Lihat di panel admin:\n";
+        $admin_body   .= "https://puspeci.sbs/admin/dashboard.php\n\n";
+        $admin_body   .= "— Puspeci System";
+
+        kirim_email(ADMIN_EMAIL, $admin_subject, $admin_body);
 
     header('Location: index.php?sukses=1&tiket=' . urlencode($nomor_tiket));
 } else {
