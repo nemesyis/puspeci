@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
                 $body     = "Halo {$p['nama_pelapor']},\n\n";
                 $body    .= "Status pengaduan kamu telah diperbarui:\n\n";
                 $body    .= "Nomor Tiket : {$p['nomor_tiket']}\n";
+                $body    .= "Kategori    : {$p['kategori']}\n";
+                $body    .= "RT / RW     : " . ($p['rt'] && $p['rw'] ? "RT {$p['rt']} / RW {$p['rw']}" : "-") . "\n";
                 $body    .= "Judul       : {$p['judul']}\n";
                 $body    .= "Status baru : $new_status\n\n";
                 $body    .= "Pantau detail pengaduan di:\n";
@@ -184,6 +186,16 @@ $badge = $badge_map[$p['status']] ?? 'secondary';
                         <span class="badge bg-light text-dark border px-2 py-1">
                             <?= htmlspecialchars($p['kategori']) ?>
                         </span>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field-label">RT / RW</div>
+                    <div class="field-value">
+                        <?php if ($p['rt'] && $p['rw']): ?>
+                            RT <?= htmlspecialchars($p['rt']) ?> / RW <?= htmlspecialchars($p['rw']) ?>
+                        <?php else: ?>
+                            <span class="text-muted">—</span>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="field-row">

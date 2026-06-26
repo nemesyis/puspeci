@@ -158,6 +158,7 @@ $pesan_error  = $_GET['error']  ?? null;
                         </label>
                         <input type="tel" name="no_hp" class="form-control"
                                placeholder="08xx-xxxx-xxxx" maxlength="20">
+                        <div class="form-text">Isi jika ingin dihubungi.</div>
                     </div>
 
                     <!-- Email -->
@@ -168,7 +169,7 @@ $pesan_error  = $_GET['error']  ?? null;
                         </label>
                         <input type="email" name="email" class="form-control"
                                placeholder="contoh@email.com" maxlength="150">
-                        <div class="form-text">Isi jika ingin mendapat konfirmasi via email.</div>
+                        <div class="form-text">Isi jika ingin mendapat info proses pengaduan.</div>
                     </div>
 
                     <!-- Kategori -->
@@ -184,6 +185,30 @@ $pesan_error  = $_GET['error']  ?? null;
                             <option>Pelayanan Publik</option>
                             <option>Lainnya</option>
                         </select>
+                    </div>
+
+                    <!-- RT/RW -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            RT / RW
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">RT</span>
+                                    <input type="text" name="rt" class="form-control" required
+                                        placeholder="-" maxlength="5">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">RW</span>
+                                    <input type="text" name="rw" class="form-control" required
+                                        placeholder="-" maxlength="5">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Judul -->

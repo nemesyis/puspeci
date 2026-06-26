@@ -22,6 +22,10 @@ if (empty($_POST['csrf']) || empty($_SESSION['csrf']) ||
 $nama_pelapor  = trim($_POST['nama_pelapor'] ?? '');
 $no_hp         = trim($_POST['no_hp']        ?? '');
 $email         = trim($_POST['email']        ?? '');
+$rt            = preg_replace('/\D/', '', $_POST['rt'] ?? '');
+$rw            = preg_replace('/\D/', '', $_POST['rw'] ?? '');
+$rt            = substr($rt, 0, 5);
+$rw            = substr($rw, 0, 5);
 $kategori      = trim($_POST['kategori']     ?? '');
 $judul         = trim($_POST['judul']        ?? '');
 $isi_pengaduan = trim($_POST['isi_pengaduan'] ?? '');
@@ -40,6 +44,14 @@ $kategori_valid = ['Infrastruktur','Keamanan','Kebersihan','Pelayanan Publik','L
 
 if (!in_array($kategori, $kategori_valid)) {
     header('Location: index.php?error=Kategori+tidak+valid');
+    exit;
+}
+if ($rt === '') {
+    header('Location: index.php?error=RT+wajib+diisi');
+    exit;
+}
+if ($rw === '') {
+    header('Location: index.php?error=RW+wajib+diisi');
     exit;
 }
 if ($judul === '') {
@@ -152,15 +164,17 @@ $nomor_tiket = generateNomorTiket($conn);
 // ── 5. Simpan ke database ───────────────────────────────────────────────────
 $stmt = $conn->prepare("
     INSERT INTO pengaduan
-        (nomor_tiket, nama_pelapor, no_hp, email, kategori, judul, isi_pengaduan, foto)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (nomor_tiket, nama_pelapor, no_hp, email, kategori, rt, rw, judul, isi_pengaduan, foto)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->bind_param('ssssssss',
+$stmt->bind_param('ssssssssss',
     $nomor_tiket,
     $nama_pelapor,
     $no_hp,
     $email,
     $kategori,
+    $rt,
+    $rw,
     $judul,
     $isi_pengaduan,
     $foto_path
@@ -177,6 +191,7 @@ if ($stmt->execute()) {
         $body    .= "Pengaduan kamu telah berhasil kami terima. Berikut detailnya:\n\n";
         $body    .= "Nomor Tiket : $nomor_tiket\n";
         $body    .= "Kategori    : $kategori\n";
+        $body    .= "RT / RW     : " . ($rt && $rw ? "RT $rt / RW $rw" : "-") . "\n";
         $body    .= "Judul       : $judul\n";
         $body    .= "Status      : Masuk\n\n";
         $body    .= "Pantau status pengaduan di:\n";
