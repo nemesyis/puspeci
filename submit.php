@@ -182,9 +182,8 @@ $stmt->bind_param('ssssssssss',
 
 if ($stmt->execute()) {
 
-    // ── Kirim email notifikasi ke pelapor (kalau email diisi) ────────────────
+    require_once __DIR__ . '/config/mail.php';
     if ($email !== '') {
-        require_once __DIR__ . '/config/mail.php';
 
         $subject  = "[Puspeci] Pengaduan diterima — $nomor_tiket";
         $body     = "Halo $nama_pelapor,\n\n";
@@ -215,7 +214,9 @@ if ($stmt->execute()) {
         $admin_body   .= "https://puspeci.sbs/admin/dashboard.php\n\n";
         $admin_body   .= "— Puspeci System";
 
-        kirim_email(ADMIN_EMAIL, $admin_subject, $admin_body);
+        if (defined('ADMIN_EMAIL') && filter_var(ADMIN_EMAIL, FILTER_VALIDATE_EMAIL)) {
+            kirim_email(ADMIN_EMAIL, $admin_subject, $admin_body);
+        }
 
     header('Location: index.php?sukses=1&tiket=' . urlencode($nomor_tiket));
 } else {
