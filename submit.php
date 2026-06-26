@@ -102,7 +102,7 @@ if (!empty($_FILES['foto']['name']) && is_uploaded_file($_FILES['foto']['tmp_nam
     }
 
     $ext = $mime_map[$mime];
-    $upload_dir = __DIR__ . '/assets/uploads/';
+    $upload_dir = __DIR__ . '/storage/uploads/';
     if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
     $filename = uniqid('foto_', true) . '.' . $ext;
