@@ -141,7 +141,7 @@ if (!empty($_FILES['foto']['name']) && is_uploaded_file($_FILES['foto']['tmp_nam
         }
     }
 
-    $foto_path = 'assets/uploads/' . $filename;
+    $foto_path = 'storage/uploads/' . $filename;
 }
 
 // ── 4. Generate nomor tiket unik ────────────────────────────────────────────
