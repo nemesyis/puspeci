@@ -216,6 +216,112 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
             #card-form-wrapper.slide-in,
             #alert-wrapper.slide-in { animation: none; }
         }
+
+        /* ===== About Section (carousel + text box) ===== */
+        .about-section {
+            padding: 50px 0;
+            background: #f4f6f5;
+        }
+        .about-carousel {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 360px;
+        }
+        .about-carousel .carousel-item img {
+            height: 360px;
+            object-fit: contain;
+            width: 100%;
+            background: #1a1a1a;
+        }
+        .about-carousel .carousel-item {
+            background: #d9d9d9; /* placeholder abu-abu */
+            height: 360px;
+        }
+        .about-textbox {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-top: -60px;
+            margin-left: 24px;
+            margin-right: 24px;
+            position: relative;
+            z-index: 2;
+        }
+        @media (min-width: 768px) {
+            .about-textbox {
+                margin-top: 0;
+                margin-left: -60px;
+                margin-right: 0;
+            }
+        }
+        .about-textbox h5 {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .about-textbox .fun-fact-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        /* ===== Collaboration Section ===== */
+        .collab-section {
+            padding: 40px 0 60px;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        .collab-title {
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+        .collab-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+        .collab-logo-box {
+            width: 110px;
+            height: 70px;
+            background: #f4f6f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: filter 0.2s, opacity 0.2s;
+        }
+        .collab-logo-box:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        .collab-logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
@@ -409,6 +515,68 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
 
             </div><!-- /#form-section -->
 
+        </div>
+    </div>
+</div>
+
+<!-- ===== About / Fun Fact Section ===== -->
+<div class="about-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-7">
+                <div id="aboutCarousel" class="carousel slide about-carousel" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <!-- Ganti src ini nanti dengan foto asli -->
+                             <img src="assets/jarvistolongapakan.jpg" alt="Kegiatan KKM">
+                        </div>
+                        <div class="carousel-item">
+                            <!-- Ganti src ini nanti dengan foto asli -->
+                             <img src="assets/readingthescript.png" alt="Kegiatan KKM2">
+                        </div>
+                        <div class="carousel-item">
+                            <!-- Ganti src ini nanti dengan foto asli -->
+                             <img src="assets/aduhaimalas.jpg" alt="Kegiatan KKM3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#aboutCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-5 d-flex align-items-center">
+                <div class="about-textbox">
+                    <div class="fun-fact-icon">
+                        <i class="bi bi-lightbulb-fill"></i>
+                    </div>
+                    <h5 class="mb-2">Tahukah kamu?</h5>
+                    <p class="mb-3" style="font-size:0.92rem; color:#444;">
+                        Puspeci Cimuncang dikembangkan oleh mahasiswa Fakultas Teknologi Informasi
+                        sebagai bagian dari riset penerapan teknologi untuk pelayanan masyarakat di tingkat RT/RW.
+                        Platform ini dirancang agar warga bisa menyuarakan keluhan secara mudah, cepat, dan anonim.
+                    </p>
+                    <hr>
+                    <p class="mb-0" style="font-size:0.85rem; color:#777;">
+                        <i class="bi bi-people-fill me-1 text-success"></i>
+                        Dibangun dengan semangat kolaborasi antara mahasiswa, warga, dan perangkat desa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Collaboration Section ===== -->
+<div class="collab-section">
+    <div class="container">
+        <div class="collab-title">In Collaboration With</div>
+        <div class="collab-logos">
+            <div class="collab-logo-box">Logo UNSERA</div>
+            <div class="collab-logo-box">Logo Cimuncang</div>
+            <div class="collab-logo-box">Logo Kecamatan</div>
         </div>
     </div>
 </div>
