@@ -143,6 +143,27 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
             to   { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideUpOut {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(-30px); }
+        }
+
+        @keyframes slideDownLanding {
+        from { opacity: 0; transform: translateY(-30px); }
+        to   { opacity: 1; transform: translateY(0); }
+        }
+
+        #landing-wrapper {
+            opacity: 0;
+        }
+        #landing-wrapper.slide-in-landing {
+            animation: slideDownLanding 0.6s ease forwards;
+        }
+
+        body.page-exit {
+            animation: slideUpOut 0.4s ease forwards;
+        }
+
         /* Outer container — always in DOM but invisible until triggered */
         #form-section {
             display: none;
@@ -205,26 +226,28 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
         <i class="bi bi-megaphone-fill me-2" style="color:#2e8b57"></i>
         Puspeci <span>Cimuncang</span>
     </a>
-    <a id="navbar-cek-status" href="status.php" class="btn btn-sm btn-outline-secondary">
+    <a id="navbar-cek-status" href="status.php" class="btn btn-sm btn-outline-secondary" onclick="return gotoStatus(event)">
         <i class="bi bi-search me-1"></i> Cek Status
     </a>
 </nav>
 
 <!-- Hero -->
-<div class="hero">
-    <div class="container text-center">
-        <h1><i class="bi bi-shield-check me-2"></i>Pusat Pengaduan Masyarakat</h1>
-        <p class="mb-0">Sampaikan keluhan dan aspirasi kamu untuk Cimuncang yang lebih baik.</p>
-        <p class="mt-1"><small>Setiap pengaduan akan ditindaklanjuti oleh tim kami.</small></p>
+<div id="landing-wrapper">
+    <div class="hero">
+        <div class="container text-center">
+            <h1><i class="bi bi-shield-check me-2"></i>Pusat Pengaduan Masyarakat</h1>
+            <p class="mb-0">Sampaikan keluhan dan aspirasi kamu untuk Cimuncang yang lebih baik.</p>
+            <p class="mt-1"><small>Setiap pengaduan akan ditindaklanjuti oleh tim kami.</small></p>
 
-        <!-- CTA Buttons — hanya tampil kalau form belum dibuka -->
-        <div class="landing-actions" id="landing-actions">
-            <button class="btn-cta-primary" onclick="bukaPengaduan()">
-                <i class="bi bi-pencil-square me-2"></i>Buat Pengaduan
-            </button>
-            <a href="status.php" class="btn-cta-secondary">
-                <i class="bi bi-search me-2"></i>Cek Status Pengaduanmu
-            </a>
+            <!-- CTA Buttons — hanya tampil kalau form belum dibuka -->
+            <div class="landing-actions" id="landing-actions">
+                <button class="btn-cta-primary" onclick="bukaPengaduan()">
+                    <i class="bi bi-pencil-square me-2"></i>Buat Pengaduan
+                </button>
+                <a href="status.php" class="btn-cta-secondary" onclick="return gotoStatus(event)">
+                    <i class="bi bi-search me-2"></i>Cek Status Pengaduanmu
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -427,6 +450,19 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
             cardFormWrapper.classList.add('slide-in');
         }, 1000);
     }
+
+    function gotoStatus(e) {
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(function () {
+            window.location.href = 'status.php';
+        }, 400); // samain sama durasi animasi CSS di atas
+        return false;
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('landing-wrapper').classList.add('slide-in-landing');
+    });
 
     // Kalau redirect balik dari submit.php dengan ?sukses= atau ?error=, langsung tampilkan semua
     <?php if ($show_form === 'true'): ?>

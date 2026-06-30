@@ -47,6 +47,26 @@ $status_badge = [
         .detail-row:last-child { border-bottom: none; }
         .detail-label { color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
         footer { font-size: 0.82rem; color: #888; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        #page-wrapper {
+            opacity: 0;
+        }
+        #page-wrapper.slide-in {
+            animation: slideDown 0.6s ease forwards;
+        }
+
+        @keyframes slideUpOut {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(-30px); }
+        }
+
+        body.page-exit {
+            animation: slideUpOut 0.4s ease forwards;
+        }
     </style>
 </head>
 <body>
@@ -56,13 +76,14 @@ $status_badge = [
         <i class="bi bi-megaphone-fill me-2" style="color:#2e8b57"></i>
         Puspeci <span style="color:#2e8b57">Cimuncang</span>
     </a>
-    <a href="index.php" class="btn btn-sm btn-outline-success">
+    <a href="index.php" class="btn btn-sm btn-outline-success" onclick="return gotoIndex(event)">
         <i class="bi bi-plus-lg me-1"></i> Buat Pengaduan
     </a>
 </nav>
 
+<div id="page-wrapper">
 <div class="hero">
-    <div class="container text-center">
+    <div class="container py-4">
         <h1 class="fs-3 fw-bold"><i class="bi bi-search me-2"></i>Cek Status Pengaduan</h1>
         <p class="mb-0 opacity-75">Masukkan nomor tiket yang kamu terima saat mengirim pengaduan.</p>
     </div>
@@ -151,5 +172,19 @@ $status_badge = [
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('page-wrapper').classList.add('slide-in');
+    });
+
+        function gotoIndex(e) {
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(function () {
+            window.location.href = 'index.php';
+        }, 400);
+        return false;
+    }
+</script>
 </body>
 </html>
