@@ -492,6 +492,16 @@ $show_form = ($pesan_sukses || $pesan_error) ? 'true' : 'false';
                                           placeholder="Jelaskan detail pengaduan kamu di sini..."></textarea>
                             </div>
 
+                            <!-- Kritik dan Saran -->
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Kritik dan Saran
+                                    <span class="badge-status ms-1">Opsional</span>
+                                </label>
+                                <textarea name="kritik_saran" class="form-control" rows="4"
+                                        placeholder="Ada hal lain yang ingin disampaikan?"></textarea>
+                            </div>
+
                             <!-- Foto -->
                             <div class="mb-4">
                                 <label class="form-label">

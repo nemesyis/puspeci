@@ -204,6 +204,16 @@ $badge = $badge_map[$p['status']] ?? 'secondary';
                         <?= htmlspecialchars($p['isi_pengaduan']) ?>
                     </div>
                 </div>
+                <div class="field-row">
+                    <div class="field-label">Kritik dan Saran</div>
+                    <div class="field-value" style="white-space:pre-wrap;line-height:1.7">
+                        <?php if (!empty($p['kritik_saran'])): ?>
+                            <?= htmlspecialchars($p['kritik_saran']) ?>
+                        <?php else: ?>
+                            <span class="text-muted">—</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
                 <?php if ($p['foto']): ?>
                 <div class="field-row">
                     <div class="field-label">Foto Lampiran</div>

@@ -145,6 +145,12 @@ $status_badge = [
                     <div class="detail-label">Isi Pengaduan</div>
                     <div><?= nl2br(htmlspecialchars($pengaduan['isi_pengaduan'])) ?></div>
                 </div>
+                <?php if (!empty($pengaduan['kritik_saran'])): ?>
+                <div class="detail-row">
+                    <div class="detail-label">Kritik dan Saran</div>
+                    <div><?= nl2br(htmlspecialchars($pengaduan['kritik_saran'])) ?></div>
+                </div>
+                <?php endif; ?>
                 <?php if ($pengaduan['foto']): ?>
                 <div class="detail-row">
                     <div class="detail-label">Foto</div>

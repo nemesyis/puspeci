@@ -29,6 +29,7 @@ $rw            = substr($rw, 0, 5);
 $kategori      = trim($_POST['kategori']     ?? '');
 $judul         = trim($_POST['judul']        ?? '');
 $isi_pengaduan = trim($_POST['isi_pengaduan'] ?? '');
+$kritik_saran  = trim($_POST['kritik_saran'] ?? '');
 
 // Validasi format email kalau diisi
 if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -164,10 +165,10 @@ $nomor_tiket = generateNomorTiket($conn);
 // ── 5. Simpan ke database ───────────────────────────────────────────────────
 $stmt = $conn->prepare("
     INSERT INTO pengaduan
-        (nomor_tiket, nama_pelapor, no_hp, email, kategori, rt, rw, judul, isi_pengaduan, foto)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (nomor_tiket, nama_pelapor, no_hp, email, kategori, rt, rw, judul, isi_pengaduan, kritik_saran, foto)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->bind_param('ssssssssss',
+$stmt->bind_param('sssssssssss',
     $nomor_tiket,
     $nama_pelapor,
     $no_hp,
@@ -177,6 +178,7 @@ $stmt->bind_param('ssssssssss',
     $rw,
     $judul,
     $isi_pengaduan,
+    $kritik_saran,
     $foto_path
 );
 
@@ -210,6 +212,7 @@ if ($stmt->execute()) {
         $admin_body   .= "Kategori    : $kategori\n";
         $admin_body   .= "Judul       : $judul\n\n";
         $admin_body   .= "Isi Pengaduan:\n$isi_pengaduan\n\n";
+        $admin_body   .= "Kritik dan Saran:\n" . ($kritik_saran ?: '-') . "\n\n";
         $admin_body   .= "Lihat di panel admin:\n";
         $admin_body   .= "https://puspeci.sbs/admin/dashboard.php\n\n";
         $admin_body   .= "— Puspeci System";
